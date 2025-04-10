@@ -52,8 +52,6 @@ function App() {
             <div className="button">Delete</div>
           </div>
 
-
-
           <div className="reminder_card">
             <h2>Reminder Note</h2>
             <h3>Remind Me at:</h3>
