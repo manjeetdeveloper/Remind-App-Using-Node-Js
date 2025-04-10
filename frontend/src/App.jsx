@@ -4,15 +4,35 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 
 function App() {
   const [reminderMsg, setReminderMsg] = useState("");
   const [remindAt, setRemindAt] = useState();
+  const [reminderList, setReminderList] = useState([]);
 
-  const addReminder = () => {};
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/getAllReminder")
+      .then((res) => setReminderList(res.data));
+    // ab jab hamara app load hoga to reponse.data ke pass ye sb chize aa jynge
+  }, []);
+
+  const addReminder = () => {
+    axios
+      .post("http://localhost:9000/addReminder", { reminderMsg, remindAt })
+      .then((res) => setReminderList(res.data));
+  };
+
+  const deleteReminder = () => {
+    // useEffect koi v chnage decte krnga ur dikha dega
+  };
 
   return (
     <div className="App">
+      {console.log(reminderList)}
       <div className="homepage">
         <div className="homepage_header">
           <h1>Remind Me 🙋‍♂️</h1>
@@ -38,27 +58,6 @@ function App() {
         </div>
 
         <div className="homepage_body">
-          <div className="reminder_card">
-            <h2>Reminder Note</h2>
-            <h3>Remind Me at:</h3>
-            <p>10/04/2025 @ 2PM</p>
-            <div className="button">Delete</div>
-          </div>
-
-          <div className="reminder_card">
-            <h2>Reminder Note</h2>
-            <h3>Remind Me at:</h3>
-            <p>10/04/2025 @ 2PM</p>
-            <div className="button">Delete</div>
-          </div>
-
-          <div className="reminder_card">
-            <h2>Reminder Note</h2>
-            <h3>Remind Me at:</h3>
-            <p>10/04/2025 @ 2PM</p>
-            <div className="button">Delete</div>
-          </div>
-
           <div className="reminder_card">
             <h2>Reminder Note</h2>
             <h3>Remind Me at:</h3>
