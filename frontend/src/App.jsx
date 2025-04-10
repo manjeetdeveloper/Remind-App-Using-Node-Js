@@ -26,9 +26,13 @@ function App() {
     setRemindAt();
   };
 
-  const deleteReminder = () => {
-    // Ye part tu baad me kar lena, abhi sirf fetch aur display ho raha hai
-  };
+ // Delete reminder
+ const deleteReminder = (id) => {
+  axios
+    .post("http://localhost:9000/deleteReminder", { id })
+    .then((res) => setReminderList(res.data))
+    .catch((err) => console.error("Error deleting reminder:", err));
+}
 
   return (
     <div className="App">
@@ -63,7 +67,9 @@ function App() {
               <h2>{reminder.reminderMsg}</h2>
               <h3>Remind Me at:</h3>
               <p>{String(new Date(reminder.remindAt.toLocaleString(undefined,{timezone:"Asia/Kolkata"})))}</p>
-              <div className="button">Delete</div>
+              <div className="button" onClick={() => deleteReminder(reminder._id)}>
+                Delete
+              </div>
             </div>
           ))}
         </div>
