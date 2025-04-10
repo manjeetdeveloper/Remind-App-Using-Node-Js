@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import "./App.css";
 import axios from "axios";
 import DateTimePicker from "react-datetime-picker";
@@ -17,17 +15,19 @@ function App() {
     axios
       .get("http://localhost:9000/getAllReminder")
       .then((res) => setReminderList(res.data));
-    // ab jab hamara app load hoga to reponse.data ke pass ye sb chize aa jynge
   }, []);
 
   const addReminder = () => {
     axios
       .post("http://localhost:9000/addReminder", { reminderMsg, remindAt })
       .then((res) => setReminderList(res.data));
+
+    setReminderMsg("");
+    setRemindAt();
   };
 
   const deleteReminder = () => {
-    // useEffect koi v chnage decte krnga ur dikha dega
+    // Ye part tu baad me kar lena, abhi sirf fetch aur display ho raha hai
   };
 
   return (
@@ -58,14 +58,16 @@ function App() {
         </div>
 
         <div className="homepage_body">
-          <div className="reminder_card">
-            <h2>Reminder Note</h2>
-            <h3>Remind Me at:</h3>
-            <p>10/04/2025 @ 2PM</p>
-            <div className="button">Delete</div>
-          </div>
+          {reminderList.map((reminder) => (
+            <div className="reminder_card" key={reminder._id}>
+              <h2>{reminder.reminderMsg}</h2>
+              <h3>Remind Me at:</h3>
+              <p>{String(new Date(reminder.remindAt.toLocaleString(undefined,{timezone:"Asia/Kolkata"})))}</p>
+              <div className="button">Delete</div>
+            </div>
+          ))}
         </div>
-      </div>
+      </div> 
     </div>
   );
 }
